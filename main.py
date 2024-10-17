@@ -1,9 +1,31 @@
 def main():
-    text = get_book_text("books/frankenstein.txt")
-    print(get_char_freq(text))
+    book_path = "books/frankenstein.txt"
+    text = get_book_text(book_path)
+    num_words = get_num_words(text)
+    chars_dict = get_chars_dict(text)
+    chars_sorted_list = chars_dict_to_sorted_list(chars_dict)
+    print(f"--- Begin report of {book_path} ---")
+    print(f"{num_words} words found in the document")
+    print()
+
+    for item in chars_sorted_list:
+        if not item["char"].isalpha():
+            continue
+        print(f"The '{item['char']}' character was found {item['num']} times")
+
+    print("--- End report ---")
 
 
-def chars_dict_to
+
+def chars_dict_to_sorted_list(num_char_dict):
+    sorted_list = []
+    for char in num_char_dict:
+        sorted_list.append({"char": char, "num": num_char_dict[char]})
+    sorted_list.sort(reverse=True, key=sort_on)
+    return sorted_list
+
+def sort_on(d):
+    return d["num"]
 
 def get_book_text(path):
     with open(path) as f:
@@ -13,14 +35,14 @@ def get_num_words(text):
     words = text.split()
     return len(words)
 
-def get_char_freq(text):
-    dic = {}
-    words = text.split()
-    for word in words:
-        lower_word = word.lower()
-        if lower_word in dic:
-            dic[lower_word] += 1
+def get_chars_dict(text):
+    chars = {}
+    for c in text:
+        lowered = c.lower()
+        if lowered in chars:
+            chars[lowered] += 1
         else:
-            dic[lower_word] = 1
-    return dic
+            chars[lowered] = 1
+    return chars
+
 main()
